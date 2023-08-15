@@ -1,9 +1,5 @@
-const Note = ({ note }) => {
-  return (
-    <li>{note.content}</li>
-  )
-}
-
+import React from "react"
+import Note from "./Note"
 
 const App = ({notes}) => {
 
