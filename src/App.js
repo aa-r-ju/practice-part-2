@@ -14,6 +14,8 @@ const App = (props) => {
     let myNotesPromise =  axios.get('http://localhost:3002/notes')
     myNotesPromise.then((result)=>{
 setNotes(result.data)
+    }).catch(error => {
+      console.log('fail')
     })
   },[])
   const addNote = (event) => {
@@ -36,7 +38,9 @@ setNotes(result.data)
     
       axios.put(url, changedNote).then(response => {
         setNotes(notes.map(n => n.id !== id ? n : response.data))
-      })   
+      }).catch(error => {
+        console.log('fail')
+      }) 
      }
 
   const handleNoteChange = (event) => {
