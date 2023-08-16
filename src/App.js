@@ -1,15 +1,38 @@
 import React from "react"
 import Note from "./Note"
+import axios from "axios"
 
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 
 const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+  const [notes, setNotes] = useState([])
 
+  const [newNote, setNewNote] = useState('') 
+
+  useEffect(()=>{
+    let myNotesPromise =  axios.get('http://localhost:3002/notes')
+    myNotesPromise.then((result)=>{
+setNotes(result.data)
+    })
+  },[])
   const addNote = (event) => {
     event.preventDefault()
-    console.log('button clicked', event.target)
+   let notePromise =  axios.post('http://localhost:3002/notes',{
+      content: newNote,
+      important: true
+    })
+    notePromise.then((output)=>{
+      setNotes([...notes,output.data])
+      setNewNote('')
+  
+    })
+     }
+
+
+  const handleNoteChange = (event) => {
+    console.dir(event.target,"apple")
+    setNewNote(event.target.value)
   }
 
   return (
@@ -21,7 +44,7 @@ const App = (props) => {
         )}
       </ul>
       <form onSubmit={addNote}>
-        <input />
+        <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
       </form>   
     </div>
